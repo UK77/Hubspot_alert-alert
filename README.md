@@ -1,0 +1,2 @@
+# Hubspot_alert-alert
+Hubspotからワークフローで飛んでくる通知にメンションを設定する
