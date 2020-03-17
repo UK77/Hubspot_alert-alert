@@ -86,3 +86,42 @@ const getMessage1 = (mentionTo) => {
 const postToSlack = (message) => {
     // Slackに投稿する
 }
+
+
+function postMessage(){
+ //webhookを用いてpost
+  const webhookUrl = "https://hooks.slack.com/services/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";
+
+  const channel = "biz-sales-hubspotalert";
+  let message = "<@" + slackID + ">さん!\nHubspotの入力項目に漏れがあります！！直ちに修正してください！！";
+  let jsonData = {
+    "channel": "#" + channel,
+    "text": message,
+    "icon_emoji":":警官:"
+  };
+  const payload = JSON.stringify(jsonData);
+  let urlFetchOption = {
+    "method": "post",
+    "contentType": "application/json",
+    "payload": payload
+  };
+  UrlFetchApp.fetch(webhookUrl, urlFetchOption);
+};
+
+//メッセージをポストする
+function doPost(e){
+  //バリデーション用
+  const params = JSON.parse(e.postData.getDataAsString());
+  return ContentService.createTextOutput(params.challenge);
+
+  const token = "xoxb-188819411059-982980887233-23VspX7vWquHtWhA2JrJXwsz";
+  const slackApp = SlackApp.create(token);
+
+  const options = {
+    channelId: "#biz-sales-hubspotalert", //チャンネル名
+    userName: "Hubspot巡査", //投稿するbotの名前
+    message: "<@" + slackID + ">さん!\nHubspotの入力項目に漏れがあります！！直ちに修正してください！！",
+    icon_emoji:":警官:"
+  };
+  slackApp.postMessage(options.channelId, options.message, {username: options.userName});
+}
