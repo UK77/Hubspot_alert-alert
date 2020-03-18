@@ -71,6 +71,10 @@ const postToSlack = (message) => {
   slackApp.postMessage(message.channel, message.text, message.username, message.icon_emoji);
 };
   
+function doGet(e){
+  doPost(e);
+};
+  
 /*  
 let testText = "*提案内容(IS/FS)*: \n*前払い利用状況（FS旧導入種別）*:\n*Deal Name*: ＨＲケイスタッフ\n*Deal owner*: 宮本 悠太郎\n*勤怠システム*: \n*バッティング状況*: ";
 const getTest = getUserId(testText);
