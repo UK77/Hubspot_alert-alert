@@ -18,32 +18,39 @@ function doPost(e) {
     }
 }
 
+
 const getUserId = (text) => {
+  //正規表現でownerの項目を取得
+  const reg = new RegExp(/owner\*: .*?\n/);
+  const owner = text.match(reg)[0].replace('owner*: ', '').replace('\n', '');
+  console.log(owner);
+/*
 //正規表現でownerの項目を取得
    if (text.match(/Deal owner/)){
     owner = text.split("\n")[3].replace("*Deal owner*: ", "");
     Logger.log("Deal owner");
-  }/*else if(text.match(/Contact owner/)){
+  }else if(text.match(/Contact owner/)){
   owner = text.split("\n")[1].replace("*Contact owner*: ", "");
   Logger.log("Contact owner");
-  }*/else if(/Company owner/){
+  }else if(/Company owner/){
     owner = text.split("\n")[1].replace("*Company owner*: ", "");
     Logger.log("Company owner");
   }else{
     return;
   };  
+*/
   // スプレッドシートからユーザーIDを拾って返す
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   const sheet = spreadsheet.getSheetByName("slackID");
-
   const lastRow = sheet.getLastRow();
   const data = sheet.getRange(2, 1, lastRow, 2).getValues();
-
-  for (i=0;i<lastRow;i++){
+  
+  let slackID;
+  for (i=0;i<lastRow-1;i++){
     if (owner !== data[i][0]){
-      break;
+      ;
     }else{
-      var slackID = data[i][1];
+      slackID = data[i][1];
       return slackID;
     };
   };
@@ -51,7 +58,7 @@ const getUserId = (text) => {
 
 const getMessage = (mentionTo) => {
   // メッセージを組み立てる
-  const options = {
+  const message = {
     "channel": "CU383GUEL", //#biz-sales-hubspotalert
     "username": "Hubspot巡査", 
     "text": "<@" + mentionTo + ">さん!\nHubspotの入力項目に漏れがあります！！直ちに修正してください！！",
@@ -61,5 +68,15 @@ const getMessage = (mentionTo) => {
 
 const postToSlack = (message) => {
     // Slackに投稿する
-  slackApp.postMessage(options.channel, options.text, options.username, options.icon_emoji);
+  slackApp.postMessage(message.channel, message.text, message.username, message.icon_emoji);
 };
+  
+/*  
+let testText = "*提案内容(IS/FS)*: \n*前払い利用状況（FS旧導入種別）*:\n*Deal Name*: ＨＲケイスタッフ\n*Deal owner*: 宮本 悠太郎\n*勤怠システム*: \n*バッティング状況*: ";
+const getTest = getUserId(testText);
+const logTest = test => {
+  Logger.log(testText);
+  Logger.log(test + "test is done");
+};
+logTest(getTest);
+*/
