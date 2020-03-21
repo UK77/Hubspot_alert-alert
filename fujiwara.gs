@@ -3,10 +3,12 @@ SLACK_TOKEN = "xoxb-188819411059-982980887233-23VspX7vWquHtWhA2JrJXwsz";
 const slackApp = SlackApp.create(SLACK_TOKEN);
 
 function doPost(e) {
+    Logger.log(e.parameter);
+    //return ContentService.createTextOutput();
     const params = JSON.parse(e.postData.getDataAsString());
     // URL登録時にURLの検証イベントがあった気がする
-    if (params.type == 'challenge') {
-        const response = { 'challenge': params.challenge }
+    if (params.type == 'url_verification') {
+        const response = { 'challenge': params.challenge };
         return ContentService.createTextOutput(JSON.stringify(response)).setMimeType(ContentService.MimeType.JSON);
     }
     // EventAPIからのPOSTを検証し、userがbotだったらSlackに投げる
@@ -16,8 +18,11 @@ function doPost(e) {
         postToSlack(message);
         return ContentService.createTextOutput().setMimeType(ContentService.MimeType.JSON);
     }
-}
+};
 
+function doGet(e){
+  doPost(e);
+};
 
 const getUserId = (text) => {
   //正規表現でownerの項目を取得
@@ -71,9 +76,7 @@ const postToSlack = (message) => {
   slackApp.postMessage(message.channel, message.text, message.username, message.icon_emoji);
 };
   
-function doGet(e){
-  doPost(e);
-};
+
   
 /*  
 let testText = "*提案内容(IS/FS)*: \n*前払い利用状況（FS旧導入種別）*:\n*Deal Name*: ＨＲケイスタッフ\n*Deal owner*: 宮本 悠太郎\n*勤怠システム*: \n*バッティング状況*: ";
