@@ -1,6 +1,6 @@
 function doGet(){
-  const token = "xoxb-188819411059-982980887233-23VspX7vWquHtWhA2JrJXwsz";
-  const channel = "CU383GUEL";
+  const token = "YOUR_TOKEN";
+  const channel = "YOUR_CHANNEL";
   
   const urlFetchOption = {
     'method' : 'get',
@@ -45,9 +45,9 @@ function searchUserID(){
 
 function doPost(){
  //webhookを用いてpost
-  const webhookUrl = "https://hooks.slack.com/services/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";
+  const webhookUrl = "YOUR_WEBHOOK_URL";
   
-  const channel = "biz-sales-hubspotalert";
+  const channel = "YOUR_CHANNEL";
   let message = "<@" + slackID + ">さん!\nHubspotの入力項目に漏れがあります！！直ちに修正してください！！";
   let jsonData = {
     "channel": "#" + channel,
